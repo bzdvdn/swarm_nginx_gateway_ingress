@@ -14,6 +14,18 @@ server {
     listen 80 {{ server_name }} reuseport;
     listen [::]:80 {{ server_name }} reuseport;
     {% endif %}
+   # custom errors
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+        root /etc/nginx/html;
+        internal;
+    }
+
+    error_page 500 502 503 504 /custom_50x.html;
+    location = /custom_50x.html {
+        root /etc/nginx/html;
+        internal;
+    }
     {% for service in server.proxies_service_list %}
         location {{ service.location }} {
           {% if service.custom_location_data%}

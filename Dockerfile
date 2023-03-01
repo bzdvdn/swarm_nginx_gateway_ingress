@@ -40,11 +40,11 @@ ENV LOG_FORMAT "default"
 
 ADD ./ingress /ingress
 ADD ./docker-entrypoint.sh /docker-entrypoint.sh
-ADD ./html/index.html /etc/nginx/html/index.html
+ADD ./html/ /etc/nginx/html/
 ADD options-ssl-nginx.conf /etc/nginx/options-ssl-nginx.conf
 ADD ssl-dhparams.pem /etc/nginx/ssl-dhparams.pem
 
-HEALTHCHECK --interval=20s --timeout=2s --retries=2 \
+HEALTHCHECK --interval=20s --timeout=3s --retries=2 \
     CMD curl -A " ~ GATEWAY health check ~" http://0.0.0.0 && kill -0 `cat /ingress/ingress.pid`
 
 RUN chmod +x /docker-entrypoint.sh

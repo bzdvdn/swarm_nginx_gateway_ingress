@@ -64,7 +64,7 @@ class GatewayManager(object):
 
         if not servers:
             servers = {
-                '_': {
+                'default_server': {
                     'proxies_service_list': [DEFAULT_PROXY_FOR_SERVER],
                     'with_ssl': False,
                 }
@@ -76,7 +76,7 @@ class GatewayManager(object):
         proxies_service_list = []
         for service_name, service in services_labels.items():
             domain = service.get('GATEWAY_INGRESS', {}).get('domain', {})
-            domain_name = domain.get('name', "_")
+            domain_name = domain.get('name', "default_server")
             with_ssl = domain.get('with_ssl', '0') in TRUE_VALUES
             proxy_params = service.get('GATEWAY_INGRESS', {}).get('proxy', {})
             if proxy_params:
