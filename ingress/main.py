@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 
 from docker import Client
 
@@ -12,6 +13,8 @@ from template import (
 )
 from reload_nginx import reload_nginx
 from gateway import GatewayManager
+
+logger = logging.getLogger('swarm_gateway_ingress')
 
 
 def get_servers(cli: Client) -> dict:
@@ -48,7 +51,7 @@ def main():
             with_ssl=with_ssl,
             debug=os.environ['DEBUG'] in TRUE_VALUES,
         )
-        print('reload_conf - ', reload_conf)
+        logger.info(f'reload_conf -  {reload_conf}')
         # Reload nginx with the new configuration
         if reload_conf:
             reload_nginx()

@@ -1,8 +1,12 @@
 import os
+import logging
 
 from jinja2 import Template
 
 from values import DEFAULT_LOG_FORMAT, JSON_LOG_FORMAT
+
+
+logger = logging.getLogger('swarm_gateway_ingress')
 
 
 def resolve_pattern(pattern: str) -> str:
@@ -79,12 +83,12 @@ def handle_gateway_template(
     if current_gateway_config != new_gateway_config:
 
         current_gateway_config = new_gateway_config
-        print(
+        logger.info(
             "[Ingress Auto Configuration] Services have changed, updating nginx configuration..."
         )
         with open(gateway_config_path, 'w') as f:
             f.write(new_gateway_config)
         if debug:
-            print(new_gateway_config)
+            logger.debug(f'new - {new_gateway_config}, old - {current_gateway_config}')
         return True
     return False
